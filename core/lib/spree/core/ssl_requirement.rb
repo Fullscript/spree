@@ -74,6 +74,9 @@ module SslRequirement
   protected
     # Returns true if the current action is supposed to run as SSL
     def ssl_required?
+      # this is our patch to ssl_required? that won't be needed in Spree 2.x
+      return true if Rails.application.config.force_ssl
+      
       if self.class.respond_to?(:ssl_required_actions)
         actions = self.class.ssl_required_actions
         actions.empty? || actions.include?(action_name.to_sym)
