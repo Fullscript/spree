@@ -37,7 +37,8 @@ module Spree
 
     alias_attribute :ship_total, :shipment_total
 
-    has_many :state_changes, as: :stateful
+    belongs_to :store, class_name: 'Spree::Store'
+    has_many :state_changes, as: :stateful, dependent: :destroy
     has_many :line_items, -> { order("#{LineItem.table_name}.created_at ASC") }, dependent: :destroy, inverse_of: :order
     has_many :payments, dependent: :destroy
     has_many :return_authorizations, dependent: :destroy, inverse_of: :order
@@ -460,6 +461,7 @@ module Spree
       updater.update_item_count
       adjustments.destroy_all
       shipments.destroy_all
+      state_changes.destroy_all
 
       update_totals
       persist_totals
