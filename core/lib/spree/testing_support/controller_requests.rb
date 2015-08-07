@@ -62,6 +62,10 @@ module Spree
         process_spree_xhr_action(action, parameters, session, flash, :put)
       end
 
+      def spree_xhr_patch(action, parameters = nil, session = nil, flash = nil)
+        process_spree_xhr_action(action, parameters, session, flash, :patch)
+      end
+
       def spree_xhr_delete(action, parameters = nil, session = nil, flash = nil)
         process_spree_xhr_action(action, parameters, session, flash, :delete)
       end
