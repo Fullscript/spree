@@ -40,6 +40,11 @@ module Spree
         process_spree_action(action, parameters, session, flash, "PUT")
       end
 
+      # Executes a request simulating PATCH HTTP method and set/volley the response
+      def spree_patch(action, parameters = nil, session = nil, flash = nil)
+        process_spree_action(action, parameters, session, flash, "PATCH")
+      end
+
       # Executes a request simulating DELETE HTTP method and set/volley the response
       def spree_delete(action, parameters = nil, session = nil, flash = nil)
         process_spree_action(action, parameters, session, flash, "DELETE")
