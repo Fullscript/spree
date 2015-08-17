@@ -30,12 +30,12 @@ Gem::Specification.new do |s|
   s.add_dependency 'httparty', '~> 0.11' # For checking alerts.
   s.add_dependency 'i18n', '0.6.9' # Lockdown to 0.6.9 since 0.6.10 breaks build https://github.com/svenfuchs/i18n/issues/259
   s.add_dependency 'json', '~> 1.7'
-  s.add_dependency 'kaminari', '~> 0.15.0'
+  s.add_dependency 'kaminari', '~> 0.16.1'
   s.add_dependency 'monetize', '~> 1.1'
   s.add_dependency 'paperclip', '~> 3.4.1'
   s.add_dependency 'paranoia', '~> 2.0'
   s.add_dependency 'rails', '~> 4.1.12'
-  s.add_dependency 'ransack', '~> 1.1.0'
+  s.add_dependency 'ransack', '~> 1.4.1'
   s.add_dependency 'state_machine', '1.2.0'
   s.add_dependency 'stringex', '~> 1.5.1'
   s.add_dependency 'truncate_html', '0.9.2'
