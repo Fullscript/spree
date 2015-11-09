@@ -30,7 +30,7 @@ module Spree
 
     after_create :update_tax_charge
 
-    delegate :name, :description, :should_track_inventory?, to: :variant
+    delegate :name, :description, to: :variant
 
     attr_accessor :target_shipment
 

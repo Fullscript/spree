@@ -119,7 +119,7 @@ describe Spree::ReturnAuthorization do
       context 'with Config.track_inventory_levels == false' do
         before do
           Spree::Config.track_inventory_levels = false
-          expect(Spree::StockItem).not_to receive(:find_by)
+          expect(Spree::StockItem).to receive(:find_by)
           expect(Spree::StockMovement).not_to receive(:create!)
         end
 
