@@ -21,24 +21,21 @@ module Spree
         package = Package.new(stock_location, order)
         order.line_items.each do |line_item|
           stock_item = stock_location.stock_item(line_item.variant)
-          if stock_item && stock_item.should_track_inventory?
-            next unless stock_location.stock_item(line_item.variant)
+          if stock_item
+            if stock_item.should_track_inventory?
+              next unless stock_location.stock_item(line_item.variant)
 
-            on_hand, backordered = stock_location.fill_status(line_item.variant, line_item.quantity)
-            package.add line_item, on_hand, :on_hand if on_hand > 0
-            package.add line_item, backordered, :backordered if backordered > 0
-          else
-            # TODO - until Distributor is pulled into this fork from hw_admin
-            # there is no way to determine the correct course of action IF there was no stock
-            # item for the variant. This test passes here but does not work in the new Distributor aware
-            # world.
-            #
-            # To make it actually work for realz is to consult the Distributor's default inventory tracking flag.
-            # This is done in the Packer customizations in hw_admin :(
-            package.add line_item, line_item.quantity, :on_hand unless Spree::Config.track_inventory_levels
+              on_hand, backordered = stock_location.fill_status(line_item.variant, line_item.quantity)
+              package.add line_item, on_hand, :on_hand if on_hand > 0
+              package.add line_item, backordered, :backordered if backordered > 0
+            else
+              package.add line_item, line_item.quantity, :on_hand unless Spree::Config.track_inventory_levels
+            end
           end
+          package
+        else
+          # do nothing - no stock item, no fulfillment
         end
-        package
       end
 
       private
