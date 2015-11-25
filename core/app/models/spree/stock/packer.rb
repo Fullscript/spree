@@ -32,10 +32,8 @@ module Spree
               package.add line_item, line_item.quantity, :on_hand unless Spree::Config.track_inventory_levels
             end
           end
-          package
-        else
-          # do nothing - no stock item, no fulfillment
         end
+        package
       end
 
       private
