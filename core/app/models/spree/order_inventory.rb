@@ -62,7 +62,8 @@ module Spree
       end
 
       def add_to_shipment(shipment, quantity)
-        if variant.should_track_inventory?
+        stock_item = shipment.stock_location.stock_items.find_by variant_id: variant.id
+        if stock_item && stock_item.should_track_inventory?
           on_hand, back_order = shipment.stock_location.fill_status(variant, quantity)
 
           on_hand.times { shipment.set_up_inventory('on_hand', variant, order, line_item) }

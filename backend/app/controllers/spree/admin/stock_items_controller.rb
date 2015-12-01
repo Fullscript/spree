@@ -1,7 +1,7 @@
 module Spree
   module Admin
     class StockItemsController < Spree::Admin::BaseController
-      before_filter :determine_backorderable, only: :update
+      before_filter :determine_backorderable_and_track_inventory, only: :update
 
       def update
         stock_item.save
@@ -43,8 +43,9 @@ module Spree
           @stock_item ||= StockItem.find(params[:id])
         end
 
-        def determine_backorderable
+        def determine_backorderable_and_track_inventory
           stock_item.backorderable = params[:stock_item].present? && params[:stock_item][:backorderable].present?
+          stock_item.track_inventory = params[:stock_item].present? && params[:stock_item][:track_inventory].present?
         end
     end
   end

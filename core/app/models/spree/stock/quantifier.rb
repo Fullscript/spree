@@ -9,10 +9,10 @@ module Spree
       end
 
       def total_on_hand
-        if @variant.should_track_inventory?
-          stock_items.sum(:count_on_hand)
-        else
+        if !Spree::Config.track_inventory_levels || stock_items.any? {|si| !si.track_inventory? }
           Float::INFINITY
+        else
+          stock_items.sum(:count_on_hand)
         end
       end
 

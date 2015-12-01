@@ -84,10 +84,9 @@ module Spree
         inventory_units(include: :variant).each do |iu|
           iu.return!
 
-          if iu.variant.should_track_inventory?
-            if stock_item = Spree::StockItem.find_by(variant_id: iu.variant_id, stock_location_id: stock_location_id)
+          stock_item = Spree::StockItem.find_by(variant_id: iu.variant_id, stock_location_id: stock_location_id)
+          if (stock_item && stock_item.should_track_inventory?) && Spree::Config.track_inventory_levels
               Spree::StockMovement.create!(stock_item_id: stock_item.id, quantity: 1)
-            end
           end
         end
 

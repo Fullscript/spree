@@ -36,7 +36,7 @@ module Spree
         end
 
         context 'when variant inventory tracking is off' do
-          before { stock_item.variant.track_inventory = false }
+          before { stock_item.update_column :track_inventory, false }
 
           specify { subject.total_on_hand.should == Float::INFINITY }
 

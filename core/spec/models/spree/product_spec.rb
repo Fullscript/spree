@@ -431,12 +431,15 @@ describe Spree::Product do
   context '#total_on_hand' do
     it 'should be infinite if track_inventory_levels is false' do
       Spree::Config[:track_inventory_levels] = false
-      build(:product, :variants_including_master => [build(:master_variant)]).total_on_hand.should eql(Float::INFINITY)
+      build(:product)
     end
 
     it 'should be infinite if variant is on demand' do
       Spree::Config[:track_inventory_levels] = true
-      build(:product, :variants_including_master => [build(:on_demand_master_variant)]).total_on_hand.should eql(Float::INFINITY)
+      product = build(:product)
+      allow(product).to receive_message_chain(:stock_items, :loaded?).and_return true
+      allow(product).to receive_message_chain(:stock_items, :any?).and_return true
+      product.total_on_hand.should eql(Float::INFINITY)
     end
 
     it 'should return sum of stock items count_on_hand' do
