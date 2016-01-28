@@ -165,9 +165,14 @@ module Spree
         payment_method.respond_to?(:payment_profiles_supported?) && payment_method.payment_profiles_supported?
       end
 
+      # Update from upstream 3e0b405a
       def create_payment_profile
-        return unless source.respond_to?(:has_payment_profile?) && !source.has_payment_profile? &&
-          state != 'invalid' && state != 'failed'
+        # Don't attempt to create on bad payments.
+        return if %w(invalid failed).include?(state)
+        # Payment profile cannot be created without source
+        return unless source
+        # Imported payments shouldn't create a payment profile.
+        return if source.respond_to?(:imported) && source.imported
 
         payment_method.create_profile(self)
       rescue ActiveMerchant::ConnectionError => e
