@@ -167,6 +167,9 @@ module Spree
 
       # Update from upstream 3e0b405a
       def create_payment_profile
+        # Don't attempt if my source is another Payment
+        return if source.is_a?(Spree::Payment)
+
         # Don't attempt to create on bad payments.
         return if %w(invalid failed).include?(state)
         # Payment profile cannot be created without source
