@@ -11,7 +11,9 @@ module Spree
 
       def prioritized_packages
         sort_packages
+        DebugLogger.log @order, package_count: @packages.count, action: "post-sort_packages--#{__method__}"
         adjust_packages
+        DebugLogger.log @order, package_count: @packages.count, action: "post-adjust_packages--#{__method__}"
         prune_packages
         packages
       end

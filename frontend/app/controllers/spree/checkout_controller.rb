@@ -35,6 +35,7 @@ module Spree
         end
 
         if @order.completed?
+          DebugLogger.log @order, action: __method__, completed_at: Time.now.utc.iso8601
           session[:order_id] = nil
           flash.notice = Spree.t(:order_processed_successfully)
           flash[:commerce_tracking] = "nothing special"
@@ -72,7 +73,7 @@ module Spree
       end
 
       def load_order_with_lock
-        @order = current_order(lock: true) 
+        @order = current_order(lock: true)
         redirect_to spree.cart_path and return unless @order
       end
 
