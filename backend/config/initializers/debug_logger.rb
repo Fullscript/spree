@@ -8,12 +8,11 @@ module DebugLogger
       order_state: order.state,
       shipment_ids: shipment_ids,
       shipment_count: shipment_ids.count,
-      t: Time.now.utc.iso8601
     }
     hash.merge!(action: action, package_count: package_count, completed_at: completed_at)
     hash.merge!(extra)
 
-    logger.log "#{hash.to_json}"
+    logger.info "#{hash.to_json}"
   end
 
   def self.logger
