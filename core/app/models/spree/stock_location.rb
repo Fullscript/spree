@@ -16,7 +16,7 @@ module Spree
     def state_text
       state.try(:abbr) || state.try(:name) || state_name
     end
-    
+
     # Wrapper for creating a new stock item respecting the backorderable config
     def propagate_variant(variant)
       self.stock_items.create!(variant: variant, backorderable: self.backorderable_default)
@@ -62,8 +62,8 @@ module Spree
     end
 
     def move(variant, quantity, originator = nil)
-      stock_item_or_create(variant).stock_movements.create!(quantity: quantity,
-                                                            originator: originator)
+      stock_item = stock_item(variant)
+      stock_item.stock_movements.create!(quantity: quantity, originator: originator) if stock_item
     end
 
     def fill_status(variant, quantity)
