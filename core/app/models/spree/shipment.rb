@@ -37,6 +37,10 @@ module Spree
           shipment.determine_state(shipment.order) == 'ready'
         }
       end
+      after_transition from: :pending, to: :ready, do: lambda{ |shipment|
+        # .pickup? is defined in the HW ShippingMethod Decorator
+        shipment.ship! if shipment.shipping_method.try(:pickup?)
+      }
 
       event :pend do
         transition from: :ready, to: :pending
@@ -153,7 +157,7 @@ module Spree
     alias discounted_amount discounted_cost
 
     # Only one of either included_tax_total or additional_tax_total is set
-    # This method returns the total of the two. Saves having to check if 
+    # This method returns the total of the two. Saves having to check if
     # tax is included or additional.
     def tax_total
       included_tax_total + additional_tax_total
