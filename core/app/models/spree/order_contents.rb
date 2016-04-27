@@ -34,7 +34,13 @@ module Spree
         # promotion rules would not be triggered.
         reload_totals
         PromotionHandler::Cart.new(order).activate
-        order.ensure_updated_shipments
+        # There's a bug in Spree where updating line items can cause shipments
+        # to be deleted. As such an order can be left with 0 shipments.
+        # ensure_updated_shipments only runs on orders that have shipments and
+        # as a consequence will not reset the orders state which can have huge
+        # implications.
+        skip_restart = order.ensure_updated_shipments
+        order.restart_checkout_flow unless skip_restart
         reload_totals
         true
       else
