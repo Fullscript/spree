@@ -10,7 +10,7 @@ require 'paperclip'
 require 'paranoia'
 require 'ransack'
 require 'responders'
-require 'state_machine'
+require 'state_machines'
 require 'friendly_id'
 require 'font-awesome-rails'
 
