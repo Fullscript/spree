@@ -37,7 +37,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', '~> 4.2.7'
   s.add_dependency 'ransack', '~> 1.4.1'
   s.add_dependency 'state_machines-activerecord', '= 0.4.0'
-  s.add_dependency 'state_machines', '= 0.4.0'
   s.add_dependency 'stringex', '~> 1.5.1'
   s.add_dependency 'truncate_html', '0.9.2'
   s.add_development_dependency 'byebug'
