@@ -11,6 +11,8 @@ require 'paranoia'
 require 'ransack'
 require 'responders'
 require 'state_machines'
+require 'state_machines-activemodel'
+require 'state_machines-activerecord'
 require 'friendly_id'
 require 'font-awesome-rails'
 

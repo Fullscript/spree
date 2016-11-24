@@ -99,7 +99,7 @@ describe Spree::Order do
 
     it "cannot transition to address without any line items" do
       order.line_items.should be_blank
-      lambda { order.next! }.should raise_error(StateMachine::InvalidTransition, /#{Spree.t(:there_are_no_items_for_this_order)}/)
+      lambda { order.next! }.should raise_error(StateMachines::InvalidTransition, /#{Spree.t(:there_are_no_items_for_this_order)}/)
     end
 
     context "from address" do
@@ -137,7 +137,7 @@ describe Spree::Order do
         context "if there are no shipping rates for any shipment" do
           specify do
             transition = lambda { order.next! }
-            transition.should raise_error(StateMachine::InvalidTransition, /#{Spree.t(:items_cannot_be_shipped)}/)
+            transition.should raise_error(StateMachines::InvalidTransition, /#{Spree.t(:items_cannot_be_shipped)}/)
           end
         end
       end
