@@ -153,7 +153,7 @@ module Spree
     alias discounted_amount discounted_cost
 
     # Only one of either included_tax_total or additional_tax_total is set
-    # This method returns the total of the two. Saves having to check if 
+    # This method returns the total of the two. Saves having to check if
     # tax is included or additional.
     def tax_total
       included_tax_total + additional_tax_total
@@ -359,7 +359,7 @@ module Spree
       end
 
       def send_shipped_email
-        ShipmentMailer.shipped_email(self.id).deliver
+        ShipmentMailer.shipped_email(self.id).deliver_now
       end
 
       def set_cost_zero_when_nil
