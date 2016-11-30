@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activemerchant', '1.50.0'
   s.add_dependency 'acts_as_list', '~> 0.8.2'
-  s.add_dependency 'awesome_nested_set', '~> 3.0.0.rc.3'
+  s.add_dependency 'awesome_nested_set', '~> 3.1.1'
   s.add_dependency 'aws-sdk', '~> 2.6'
   s.add_dependency 'cancancan', '~> 1.12.0'
   s.add_dependency 'deface', '~> 1.0.0'
