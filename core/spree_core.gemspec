@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'font-awesome-rails', '~> 4.0'
   s.add_dependency 'friendly_id', '~> 5.1.0'
   s.add_dependency 'highline', '~> 1.6.18' # Necessary for the install generator
-  s.add_dependency 'httparty', '~> 0.11' # For checking alerts.
+  s.add_dependency 'httparty', '~> 0.14.0' # For checking alerts.
   s.add_dependency 'i18n', '~> 0.7'
   s.add_dependency 'json', '~> 1.7'
   s.add_dependency 'kaminari', '~> 0.16.1'
