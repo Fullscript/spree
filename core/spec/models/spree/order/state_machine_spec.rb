@@ -2,11 +2,14 @@ require 'spec_helper'
 
 describe Spree::Order, :type => :model do
   let(:order) { Spree::Order.new }
+  let(:mail_double) { double('Mail::Message') }
   before do
     # Ensure state machine has been re-defined correctly
     Spree::Order.define_state_machine!
     # We don't care about this validation here
     allow(order).to receive(:require_email)
+
+    allow(mail_double).to receive(:deliver_now)
   end
 
   context "#next!" do
@@ -83,8 +86,10 @@ describe Spree::Order, :type => :model do
         expect(order.can_cancel?).to be true
       end
     end
-
-    (Spree::Shipment.state_machine.states.keys - %w(pending backorder ready)).each do |shipment_state|
+    # Note to fullscipt - note this change! literal array of symbols vs previous literal array of strings
+    #                    in case there is state machine weirdness during testing!
+    #                    => old Spree::Shipment.state_machine.states.keys - ===> %w <====(pending backorder ready)
+    (Spree::Shipment.state_machine.states.keys - %i(pending backorder ready)).each do |shipment_state|
       it "should be false if shipment_state is #{shipment_state}" do
         allow(order).to receive_messages :completed? => true
         order.shipment_state = shipment_state
@@ -132,13 +137,12 @@ describe Spree::Order, :type => :model do
       allow(shipment).to receive(:cancel!)
       allow(order).to receive :has_available_shipment
       allow(order).to receive :restock_items!
-      mail_message = double "Mail::Message"
       order_id = nil
       expect(Spree::OrderMailer).to receive(:cancel_email) { |*args|
         order_id = args[0]
-        mail_message
+        mail_double
       }
-      expect(mail_message).to receive :deliver
+      expect(mail_double).to receive :deliver_now
       order.cancel!
       expect(order_id).to eq(order.id)
     end
@@ -147,8 +151,8 @@ describe Spree::Order, :type => :model do
       before do
         allow(shipment).to receive(:ensure_correct_adjustment)
         allow(shipment).to receive(:update_order)
-        allow(Spree::OrderMailer).to receive(:cancel_email).and_return(mail_message = double)
-        allow(mail_message).to receive :deliver
+        allow(Spree::OrderMailer).to receive(:cancel_email).and_return(mail_message = mail_double)
+        allow(mail_message).to receive :deliver_now
 
         allow(order).to receive :has_available_shipment
       end
@@ -161,8 +165,7 @@ describe Spree::Order, :type => :model do
       before do
         # TODO: This is ugly :(
         # Stubs methods that cause unwanted side effects in this test
-        allow(Spree::OrderMailer).to receive(:cancel_email).and_return(mail_message = double)
-        allow(mail_message).to receive :deliver
+        allow(Spree::OrderMailer).to receive(:cancel_email).and_return(mail_message = mail_double)
         allow(order).to receive :has_available_shipment
         allow(order).to receive :restock_items!
         allow(shipment).to receive(:cancel!)

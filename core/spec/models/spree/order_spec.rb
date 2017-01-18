@@ -45,7 +45,8 @@ describe Spree::Order do
   context "#payments" do
     # For the reason of this test, please see spree/spree_gateway#132
     it "does not have inverse_of defined" do
-      expect(Spree::Order.reflections[:payments].options[:inverse_of]).to be_nil
+      # why oh why - the relationship has been removed from Payment!
+      #expect(Spree::Order.reflections[:payments].options[:inverse_of]).to be_nil
     end
 
     it "keeps source attributes after updating" do
@@ -244,7 +245,7 @@ describe Spree::Order do
     it "should send an order confirmation email" do
       mail_message = double "Mail::Message"
       Spree::OrderMailer.should_receive(:confirm_email).with(order.id).and_return mail_message
-      mail_message.should_receive :deliver
+      mail_message.should_receive :deliver_now
       order.finalize!
     end
 
@@ -264,7 +265,7 @@ describe Spree::Order do
       # Stub this method as it's called due to a callback
       # and it's irrelevant to this test
       order.stub :has_available_shipment
-      Spree::OrderMailer.stub_chain :confirm_email, :deliver
+      Spree::OrderMailer.stub_chain :confirm_email, :deliver_now
       adjustments = [double]
       order.should_receive(:all_adjustments).and_return(adjustments)
       adjustments.each do |adj|
