@@ -7,6 +7,7 @@ platforms :ruby do
   gem 'mysql2'
   gem 'pg'
   gem 'sqlite3'
+
   gem 'rails', '~> 4.2'
 end
 
