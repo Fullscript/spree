@@ -389,7 +389,7 @@ describe Spree::Shipment do
         shipment_id = args[0]
         mail_message
       }
-      mail_message.should_receive :deliver
+      mail_message.should_receive :deliver_now
       shipment.stub(:update_order_shipment_state)
       shipment.ship!
       shipment_id.should == shipment.id

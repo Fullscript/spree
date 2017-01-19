@@ -4,9 +4,9 @@ module Spree
       def initialize(options={})
       end
 
-      def deliver!(mail)
+      def deliver_now!(mail)
         if Config.enable_mail_delivery
-          mailer.deliver_now!(mail)
+          mailer.deliver!(mail)
         end
       end
 

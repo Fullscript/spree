@@ -7,6 +7,7 @@ describe Spree::LineItem do
   context '#save' do
     it 'touches the order' do
       line_item.order.should_receive(:touch)
+      line_item.updated_at_will_change!
       line_item.save
     end
   end
