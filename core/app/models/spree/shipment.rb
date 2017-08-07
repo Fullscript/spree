@@ -30,6 +30,7 @@ module Spree
     scope :trackable, -> { where("tracking IS NOT NULL AND tracking != ''") }
 
     # shipment state machine (see http://github.com/pluginaweek/state_machine/tree/master for details)
+    # comment updated 08/2017: see https://github.com/state-machines/state_machines
     state_machine initial: :pending, use_transactions: false do
       event :ready do
         transition from: :pending, to: :ready, if: lambda { |shipment|
@@ -153,7 +154,7 @@ module Spree
     alias discounted_amount discounted_cost
 
     # Only one of either included_tax_total or additional_tax_total is set
-    # This method returns the total of the two. Saves having to check if 
+    # This method returns the total of the two. Saves having to check if
     # tax is included or additional.
     def tax_total
       included_tax_total + additional_tax_total

@@ -48,6 +48,7 @@ module Spree
     end
 
     # order state machine (see http://github.com/pluginaweek/state_machine/tree/master for details)
+    # comment updated 08/2017: see https://github.com/state-machines/state_machines
     state_machine initial: :checkout do
       # With card payments, happens before purchase or authorization happens
       event :started_processing do

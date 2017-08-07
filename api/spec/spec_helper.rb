@@ -20,21 +20,6 @@ rescue LoadError
   puts "Could not load dummy application. Please ensure you have run `bundle exec rake test_app`"
   exit
 end
-#
-# STATE MACHINE GEM HACK
-# Rails 4.1.0.rc1 and StateMachine don't play nice
-# https://github.com/pluginaweek/state_machine/issues/295
-require 'state_machine'
-require 'state_machine/version'
-
-unless StateMachine::VERSION == '1.2.0'
-  # If you see this message, please test removing this file
-  # If it's still required, please bump up the version above
-  puts  "StateMachine Hack says: Please remove me, StateMachine version has changed #{__FILE__} #{__LINE__} "
-end
-module StateMachine::Integrations::ActiveModel
-  public :around_validation
-end
 
 
 
