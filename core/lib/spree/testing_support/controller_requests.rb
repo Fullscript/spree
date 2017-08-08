@@ -26,6 +26,12 @@
 module Spree
   module TestingSupport
     module ControllerRequests
+      extend ActiveSupport::Concern
+
+      included do
+        routes { Spree::Core::Engine.routes }
+      end
+
       def spree_get(action, parameters = nil, session = nil, flash = nil)
         process_spree_action(action, parameters, session, flash, "GET")
       end
@@ -73,20 +79,14 @@ module Spree
       private
 
       def process_spree_action(action, parameters = nil, session = nil, flash = nil, method = "GET")
-        @routes = Spree::Core::Engine.routes
         parameters ||= {}
         process(action, method, parameters, session, flash)
-      ensure
-        @routes = Rails.application.routes
       end
 
       def process_spree_xhr_action(action, parameters = nil, session = nil, flash = nil, method = :get)
-        @routes = Spree::Core::Engine.routes
         parameters ||= {}
         parameters.reverse_merge!(:format => :json)
         xml_http_request(method, action, parameters, session, flash)
-      ensure
-        @routes = Rails.application.routes
       end
     end
   end

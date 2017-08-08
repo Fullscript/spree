@@ -21,8 +21,6 @@ rescue LoadError
   exit
 end
 
-
-
 require 'rspec/rails'
 require 'rspec/autorun'
 require 'ffaker'

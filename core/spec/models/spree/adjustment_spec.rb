@@ -13,6 +13,7 @@ describe Spree::Adjustment do
 
     it 'touches the adjustable' do
       expect(adjustment.adjustable).to receive(:touch)
+      adjustment.updated_at_will_change! # touch will ONLLY be called on save if the record changes!!!
       adjustment.save
     end
   end
