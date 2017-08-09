@@ -14,7 +14,7 @@ module Spree
         before { Config.enable_mail_delivery = true }
         it "should deliver mail" do
           expect {
-            mail_method.deliver!(mail)
+            mail_method.deliver_now!(mail)
           }.to change { ActionMailer::Base.deliveries.size }.by(1)
         end
       end
@@ -22,7 +22,7 @@ module Spree
         before { Config.enable_mail_delivery = false }
         it "shouldn't deliver mail" do
           expect {
-            mail_method.deliver!(mail)
+            mail_method.deliver_now!(mail)
           }.not_to change { ActionMailer::Base.deliveries.size }
         end
       end

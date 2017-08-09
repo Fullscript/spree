@@ -26,6 +26,8 @@
 module Spree
   module TestingSupport
     module ControllerRequests
+      extend ActiveSupport::Concern
+
       def spree_get(action, parameters = nil, session = nil, flash = nil)
         process_spree_action(action, parameters, session, flash, "GET")
       end

@@ -360,7 +360,7 @@ module Spree
       end
 
       def send_shipped_email
-        ShipmentMailer.shipped_email(self.id).deliver
+        ShipmentMailer.shipped_email(self.id).deliver_now
       end
 
       def set_cost_zero_when_nil

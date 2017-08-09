@@ -32,7 +32,7 @@ describe Spree::ShipmentMailer do
   it "shipment_email accepts an shipment id as an alternative to an Shipment object" do
     Spree::Shipment.should_receive(:find).with(shipment.id).and_return(shipment)
     lambda {
-      shipped_email = Spree::ShipmentMailer.shipped_email(shipment.id)
+      shipped_email = Spree::ShipmentMailer.shipped_email(shipment.id).deliver_now
     }.should_not raise_error
   end
 

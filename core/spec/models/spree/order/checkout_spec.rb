@@ -420,8 +420,8 @@ describe Spree::Order do
 
     it "does not process payment within transaction" do
 
-      # GL - could fix but we have already overriden such that payments ARE made inside a transaction
-      pending # TODO FIXME
+      # NOTE - fullscript has overriden so that payments ARE processed in a transaction
+      #      - so this test is moot but passes in rails 4.2 - fails in rails 4.1
 
       # Make sure we are not already in a transaction
       ActiveRecord::Base.connection.open_transactions.should == 0

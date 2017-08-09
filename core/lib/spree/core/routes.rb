@@ -39,7 +39,6 @@ module Spree
       end
 
       def eval_block(&block)
-        # HACK
         Spree::Core::Engine.routes.send :eval_block, block
       end
     end
