@@ -6,7 +6,7 @@ module Spree
 
       def deliver_now!(mail)
         if Config.enable_mail_delivery
-          mailer.deliver_now(mail)
+          mailer.deliver_now!(mail)
         end
       end
 
