@@ -10,7 +10,6 @@ FactoryGirl.define do
     width  { generate(:random_float) }
     depth  { generate(:random_float) }
     is_master 0
-    track_inventory true
 
     product { |p| p.association(:base_product) }
     option_values { [create(:option_value)] }
@@ -28,10 +27,13 @@ FactoryGirl.define do
     end
 
     factory :on_demand_variant do
-      track_inventory false
 
       factory :on_demand_master_variant do
         is_master 1
+      end
+
+      after(:build) do |v|
+        v.stock_items << build(:stock_item, track_inventory:false)
       end
     end
 

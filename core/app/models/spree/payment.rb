@@ -48,6 +48,7 @@ module Spree
     end
 
     # order state machine (see http://github.com/pluginaweek/state_machine/tree/master for details)
+    # comment updated 08/2017: see https://github.com/state-machines/state_machines
     state_machine initial: :checkout do
       # With card payments, happens before purchase or authorization happens
       event :started_processing do
@@ -165,9 +166,17 @@ module Spree
         payment_method.respond_to?(:payment_profiles_supported?) && payment_method.payment_profiles_supported?
       end
 
+      # Update from upstream 3e0b405a
       def create_payment_profile
-        return unless source.respond_to?(:has_payment_profile?) && !source.has_payment_profile? &&
-          state != 'invalid' && state != 'failed'
+        # Don't attempt if my source is another Payment
+        return if source.is_a?(Spree::Payment)
+
+        # Don't attempt to create on bad payments.
+        return if %w(invalid failed).include?(state)
+        # Payment profile cannot be created without source
+        return unless source
+        # Imported payments shouldn't create a payment profile.
+        return if source.respond_to?(:imported) && source.imported
 
         payment_method.create_profile(self)
       rescue ActiveMerchant::ConnectionError => e

@@ -34,7 +34,7 @@ module Spree
             klass = self
 
             # To avoid a ton of warnings when the state machine is re-defined
-            StateMachine::Machine.ignore_method_conflicts = true
+            StateMachines::Machine.ignore_method_conflicts = true
             # To avoid multiple occurrences of the same transition being defined
             # On first definition, state_machines will not be defined
             state_machines.clear if respond_to?(:state_machines)
@@ -206,7 +206,7 @@ module Spree
             checkout_step_index(state) > checkout_step_index(self.state)
           end
 
-          define_callbacks :updating_from_params, terminator: 'result == false'
+          define_callbacks :updating_from_params, terminator: ->(target, result) { result == false }
 
           set_callback :updating_from_params, :before, :update_params_payment_source
 

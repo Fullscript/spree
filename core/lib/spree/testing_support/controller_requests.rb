@@ -26,6 +26,8 @@
 module Spree
   module TestingSupport
     module ControllerRequests
+      extend ActiveSupport::Concern
+
       def spree_get(action, parameters = nil, session = nil, flash = nil)
         process_spree_action(action, parameters, session, flash, "GET")
       end
@@ -38,6 +40,11 @@ module Spree
       # Executes a request simulating PUT HTTP method and set/volley the response
       def spree_put(action, parameters = nil, session = nil, flash = nil)
         process_spree_action(action, parameters, session, flash, "PUT")
+      end
+
+      # Executes a request simulating PATCH HTTP method and set/volley the response
+      def spree_patch(action, parameters = nil, session = nil, flash = nil)
+        process_spree_action(action, parameters, session, flash, "PATCH")
       end
 
       # Executes a request simulating DELETE HTTP method and set/volley the response
@@ -57,6 +64,10 @@ module Spree
         process_spree_xhr_action(action, parameters, session, flash, :put)
       end
 
+      def spree_xhr_patch(action, parameters = nil, session = nil, flash = nil)
+        process_spree_xhr_action(action, parameters, session, flash, :patch)
+      end
+
       def spree_xhr_delete(action, parameters = nil, session = nil, flash = nil)
         process_spree_xhr_action(action, parameters, session, flash, :delete)
       end
@@ -64,15 +75,20 @@ module Spree
       private
 
       def process_spree_action(action, parameters = nil, session = nil, flash = nil, method = "GET")
+        @routes = Spree::Core::Engine.routes
         parameters ||= {}
-        process(action, method, parameters.merge!(:use_route => :spree), session, flash)
+        process(action, method, parameters, session, flash)
+      ensure
+        @routes = Rails.application.routes
       end
 
       def process_spree_xhr_action(action, parameters = nil, session = nil, flash = nil, method = :get)
+        @routes = Spree::Core::Engine.routes
         parameters ||= {}
         parameters.reverse_merge!(:format => :json)
-        parameters.merge!(:use_route => :spree)
         xml_http_request(method, action, parameters, session, flash)
+      ensure
+        @routes = Rails.application.routes
       end
     end
   end

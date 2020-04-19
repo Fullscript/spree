@@ -99,7 +99,7 @@ module Spree
 
           params[:q][:s] ||= "name asc"
           @collection = super
-          @collection = @collection.with_deleted if params[:q][:deleted_at_null] == '0'
+          @collection = @collection.with_deleted if params[:q].delete(:deleted_at_null) == '0'
           # @search needs to be defined as this is passed to search_form_for
           @search = @collection.ransack(params[:q])
           @collection = @search.result.
@@ -125,7 +125,7 @@ module Spree
         def product_includes
           [{ :variants => [:images, { :option_values => :option_type }], :master => [:images, :default_price]}]
         end
-        
+
         def clone_object_url resource
           clone_admin_product_url resource
         end

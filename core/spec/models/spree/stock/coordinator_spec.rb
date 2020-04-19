@@ -9,9 +9,9 @@ module Spree
 
       context "packages" do
         it "builds, prioritizes and estimates" do
-          subject.should_receive(:build_packages).ordered
-          subject.should_receive(:prioritize_packages).ordered
-          subject.should_receive(:estimate_packages).ordered
+          expect(subject).to receive(:build_packages).and_call_original
+          expect(subject).to receive(:prioritize_packages).and_call_original
+          expect(subject).to receive(:estimate_packages).and_call_original
           subject.packages
         end
       end

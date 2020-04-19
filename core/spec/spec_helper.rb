@@ -15,6 +15,7 @@ end
 # from the project root directory.
 ENV["RAILS_ENV"] ||= 'test'
 
+require 'byebug'
 begin
   require File.expand_path("../dummy/config/environment", __FILE__)
 rescue LoadError

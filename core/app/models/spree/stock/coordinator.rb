@@ -9,8 +9,12 @@ module Spree
 
       def packages
         packages = build_packages
+        DebugLogger.log @order, package_count: packages.count, action: "post-build_packages--#{ __method__ }"
         packages = prioritize_packages(packages)
+        DebugLogger.log @order, package_count: packages.count, action: "post-prioritize_packages--#{ __method__ }"
         packages = estimate_packages(packages)
+        DebugLogger.log @order, package_count: packages.count, action: "post-estimate_packages--#{ __method__ }"
+        packages
       end
 
       # Build packages as per stock location
@@ -20,7 +24,7 @@ module Spree
       # to build a package because it would be empty. Plus we avoid errors down
       # the stack because it would assume the stock location has stock items
       # for the given order
-      # 
+      #
       # Returns an array of Package instances
       def build_packages(packages = Array.new)
         StockLocation.active.each do |stock_location|

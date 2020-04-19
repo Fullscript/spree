@@ -17,6 +17,7 @@ module Spree
     end
 
     # state machine (see http://github.com/pluginaweek/state_machine/tree/master for details)
+    # comment updated 08/2017: see https://github.com/state-machines/state_machines
     state_machine initial: :on_hand do
       event :fill_backorder do
         transition to: :on_hand, from: :backordered

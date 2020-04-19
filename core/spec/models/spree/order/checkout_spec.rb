@@ -99,7 +99,7 @@ describe Spree::Order do
 
     it "cannot transition to address without any line items" do
       order.line_items.should be_blank
-      lambda { order.next! }.should raise_error(StateMachine::InvalidTransition, /#{Spree.t(:there_are_no_items_for_this_order)}/)
+      lambda { order.next! }.should raise_error(StateMachines::InvalidTransition, /#{Spree.t(:there_are_no_items_for_this_order)}/)
     end
 
     context "from address" do
@@ -137,7 +137,7 @@ describe Spree::Order do
         context "if there are no shipping rates for any shipment" do
           specify do
             transition = lambda { order.next! }
-            transition.should raise_error(StateMachine::InvalidTransition, /#{Spree.t(:items_cannot_be_shipped)}/)
+            transition.should raise_error(StateMachines::InvalidTransition, /#{Spree.t(:items_cannot_be_shipped)}/)
           end
         end
       end
@@ -419,6 +419,10 @@ describe Spree::Order do
     let!(:payment_method) { create(:credit_card_payment_method, :environment => 'test') }
 
     it "does not process payment within transaction" do
+
+      # NOTE - fullscript has overriden so that payments ARE processed in a transaction
+      #      - so this test is moot but passes in rails 4.2 - fails in rails 4.1
+
       # Make sure we are not already in a transaction
       ActiveRecord::Base.connection.open_transactions.should == 0
 

@@ -17,7 +17,7 @@ describe Spree::TestMailer do
   it "confirm_email accepts a user id as an alternative to a User object" do
     Spree.user_class.should_receive(:find).with(user.id).and_return(user)
     lambda {
-      test_email = Spree::TestMailer.test_email(user.id)
+      test_email = Spree::TestMailer.test_email(user.id).deliver_now
     }.should_not raise_error
   end
 end

@@ -9,9 +9,12 @@ require 'monetize'
 require 'paperclip'
 require 'paranoia'
 require 'ransack'
-require 'state_machine'
+require 'state_machines'
+require 'state_machines-activemodel'
+require 'state_machines-activerecord'
 require 'friendly_id'
 require 'font-awesome-rails'
+require 'responders'
 
 module Spree
 

@@ -31,14 +31,14 @@ describe Spree::OrderMailer do
   it "confirm_email accepts an order id as an alternative to an Order object" do
     Spree::Order.should_receive(:find).with(order.id).and_return(order)
     lambda {
-      confirmation_email = Spree::OrderMailer.confirm_email(order.id)
+      confirmation_email = Spree::OrderMailer.confirm_email(order.id).deliver_now
     }.should_not raise_error
   end
 
   it "cancel_email accepts an order id as an alternative to an Order object" do
     Spree::Order.should_receive(:find).with(order.id).and_return(order)
     lambda {
-      cancel_email = Spree::OrderMailer.cancel_email(order.id)
+      cancel_email = Spree::OrderMailer.cancel_email(order.id).deliver_now
     }.should_not raise_error
   end
 
@@ -95,14 +95,14 @@ describe Spree::OrderMailer do
 
       context "confirm_email" do
         specify do
-          confirmation_email = Spree::OrderMailer.confirm_email(order)
+          confirmation_email = Spree::OrderMailer.confirm_email(order).deliver_now
           confirmation_email.body.should include("Caro Cliente,")
         end
       end
 
       context "cancel_email" do
         specify do
-          cancel_email = Spree::OrderMailer.cancel_email(order)
+          cancel_email = Spree::OrderMailer.cancel_email(order).deliver_now
           cancel_email.body.should include("Resumo da Pedido [CANCELADA]")
         end
       end

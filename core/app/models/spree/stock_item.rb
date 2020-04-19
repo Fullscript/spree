@@ -10,10 +10,16 @@ module Spree
     validates_uniqueness_of :variant_id, scope: [:stock_location_id, :deleted_at]
     validates :count_on_hand, numericality: { greater_than_or_equal_to: 0 }, if: :verify_count_on_hand?
 
-    delegate :weight, :should_track_inventory?, to: :variant
+    delegate :weight, to: :variant
 
     after_save :conditional_variant_touch, if: :changed?
     after_touch { variant.touch }
+    #
+    # Shortcut method to determine if inventory tracking is enabled for this variant
+    # This considers both tracking flag and site-wide inventory tracking settings
+    def should_track_inventory?
+      self.track_inventory? && Spree::Config.track_inventory_levels
+    end
 
     def backordered_inventory_units
       Spree::InventoryUnit.backordered_for_stock_item(self)
